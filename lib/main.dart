@@ -38,60 +38,9 @@ class _My_MainState extends State<My_Main> {
       appBar: AppBar(
         title: Text('容器布局'),
       ),
-      body: ShowIamge(),
+      
     );
   }
 }
 
-class ShowIamge extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: Colors.grey),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  width: 150.0,
-                  height: 150.0,
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 10.0, color: Colors.blueGrey),
-                      borderRadius:
-                          const BorderRadius.all(const Radius.circular(8.0))),
-                  margin: const EdgeInsets.all(4.0),
-                  child: Image.asset('images/2.jpg'),
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  width: 150.0,
-                  height: 150.0,
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 10.0, color: Colors.blueGrey),
-                      borderRadius:
-                          const BorderRadius.all(const Radius.circular(8.0))),
-                  margin: const EdgeInsets.all(4.0),
-                  child: Image.asset('images/233.jpg'),
-                ),
-              ),
-               Expanded(
-                child: Container(
-                  width: 150.0,
-                  height: 150.0,
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 10.0, color: Colors.blueGrey),
-                      borderRadius:
-                          const BorderRadius.all(const Radius.circular(8.0))),
-                  margin: const EdgeInsets.all(4.0),
-                  child: Image.asset('images/233.jpg'),
-                ),
-              ),
-            ],           
-          ),
-        ],
-      ),
-    );
-  }
-}
+
