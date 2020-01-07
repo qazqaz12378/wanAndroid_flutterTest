@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
+import 'ui/Login_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,26 +21,11 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: My_Main(),
+      home: LoginPage(),
     );
   }
 }
 
-class My_Main extends StatefulWidget {
-  @override
-  _My_MainState createState() => _My_MainState();
-}
 
-class _My_MainState extends State<My_Main> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('容器布局'),
-      ),
-      
-    );
-  }
-}
 
 
