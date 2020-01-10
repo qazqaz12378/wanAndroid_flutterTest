@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import '../service/http_service.dart';
+import '../service/HttpUtil.dart';
+import '../Data/HttpData.dart' as api;
+import 'Home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -58,22 +60,21 @@ class _LoginPageState extends State<LoginPage> {
                   if (_userNameController.text.length != 0 ||
                       _userPassController.text.length != 0) {
                     // SendLogin(_userNameController.text,_userPassController.text);
-                    var formData = {
-                      "username": _userNameController.text,
-                      "password": _userPassController.text
+                    var data = {
+                      'username': _userNameController,
+                      'password': _userPassController
                     };
-                    request("https://www.wanandroid.com/user/login",
-                            formData: formData)
-                        .then((value) {
+                   HttpUtil.getInstance().request(api.HttpApiData.LOGIN, data: data).then((value) {
                       var data = json.decode(value.toString());
                       if (data["errorCode"].toString() != 0.toString()) {
-                        ShowDialogInit(context,'提示',data["errorMsg"]);
+                        ShowDialogInit(context, '提示', data["errorMsg"]);
                       } else {
-
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => Home_Page()));
                       }
                     });
                   } else {
-                    ShowDialogInit(context,"提示","账号密码不能为空");
+                    ShowDialogInit(context, "提示", "账号密码不能为空");
                   }
                 },
               ),
@@ -85,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-void ShowDialogInit(BuildContext context,String title, String text_context) {
+void ShowDialogInit(BuildContext context, String title, String text_context) {
   showDialog(
       context: context,
       builder: (context) {
