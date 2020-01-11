@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-
+import 'Home_Article_page.dart';
 class Home_Page extends StatefulWidget {
   @override
   _Home_PageState createState() => _Home_PageState();
@@ -30,7 +30,7 @@ class _Home_PageState extends State<Home_Page>
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavihationKey,
         index: _page,
-        backgroundColor: colors[_page],
+        backgroundColor: Colors.black,//colors[_page],
         //height: 50.0,
         items: <Widget>[
           Icon(Icons.home, size: 25.0),
@@ -51,9 +51,7 @@ class _Home_PageState extends State<Home_Page>
         controller: tabController,
         physics: NeverScrollableScrollPhysics(),
         children: <Widget>[
-          Container(
-            color: colors[0],
-          ),
+          Home_Article_page(),
           Container(
             color: colors[1],
           ),

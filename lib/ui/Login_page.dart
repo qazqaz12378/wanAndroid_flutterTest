@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                       'username': _userNameController.text,
                       'password': _userPassController.text
                     };
-                   HttpUtil.getInstance().request(api.HttpApiData.LOGIN, data: data).then((value) {
+                   HttpUtil.getInstance().post(api.HttpApiData.LOGIN, data: data).then((value) {
                       var data = json.decode(value.toString());
                       if (data["errorCode"].toString() != 0.toString()) {
                         ShowDialogInit(context, '提示', data["errorMsg"]);

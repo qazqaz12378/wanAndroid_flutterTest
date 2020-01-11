@@ -39,7 +39,7 @@ class HttpUtil{
     
     
   }
-Future request(url,{data}) async{
+Future post(url,{data}) async{
   try{
     Response response;
     response = await dio.post(url,queryParameters: data);
@@ -52,6 +52,31 @@ Future request(url,{data}) async{
 
   }catch(e){
     return print('error:::${e}');
+  }
+}
+get(url,{data}) async{
+  Response response;
+  try {
+    response = await dio.get(url,queryParameters:data);
+  }on DioError catch (e) {
+    formatError(e);
+  }
+  return response;
+}
+
+void formatError(DioError e){
+  if(e.type == DioErrorType.CONNECT_TIMEOUT){
+    print('连接超时');
+  }else if(e.type == DioErrorType.SEND_TIMEOUT){
+    print('请求超时');
+  }else if(e.type == DioErrorType.RECEIVE_TIMEOUT){
+    print('响应超时');
+  }else if(e.type == DioErrorType.RESPONSE){
+    print('出现异常');
+  }else if(e.type == DioErrorType.CANCEL){
+    print('请求取消');
+  }else{
+    print('未知错误');
   }
 }
 }
