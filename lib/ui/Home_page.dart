@@ -1,26 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
 class Home_Page extends StatefulWidget {
   @override
   _Home_PageState createState() => _Home_PageState();
 }
 
-class _Home_PageState extends State<Home_Page> {
+class _Home_PageState extends State<Home_Page>
+    with SingleTickerProviderStateMixin {
+  int _page = 0;
+  GlobalKey _bottomNavihationKey = GlobalKey();
+  TabController tabController;
+  List colors = [Colors.blue, Colors.pink, Colors.orange];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    tabController = TabController(vsync: this, length: 3)
+      ..addListener(() {
+        setState(() {
+          _page = tabController.index;
+        });
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.blueAccent,
+        key: _bottomNavihationKey,
+        index: _page,
+        backgroundColor: colors[_page],
+        //height: 50.0,
         items: <Widget>[
-          Icon(Icons.add,size:30.0),
-          Icon(Icons.list,size:30.0),
-          Icon(Icons.compare_arrows,size: 30.0),
+          Icon(Icons.home, size: 25.0),
+          Icon(Icons.work, size: 25.0),
+          Icon(Icons.fiber_new, size: 25.0)
         ],
-        onTap: (index){
 
+        animationDuration: Duration(milliseconds: 500),
+        onTap: (index) {
+          setState(() {
+            _page = index;
+          });
+          tabController.animateTo(index,
+              duration: Duration(milliseconds: 300), curve: Curves.ease);
         },
       ),
-      body: Container(color: Colors.blueAccent,),
+      body: TabBarView(
+        controller: tabController,
+        physics: NeverScrollableScrollPhysics(),
+        children: <Widget>[
+          Container(
+            color: colors[0],
+          ),
+          Container(
+            color: colors[1],
+          ),
+          Container(
+            color: colors[2],
+          )
+        ],
+      ),
     );
   }
 }

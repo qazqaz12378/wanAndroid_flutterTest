@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'ui/Login_page.dart';
-
+import 'ui/Home_page.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: Home_Page(),//LoginPage(),
     );
   }
 }

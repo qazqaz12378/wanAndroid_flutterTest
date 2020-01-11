@@ -11,7 +11,7 @@ class HttpUtil{
   Dio dio;
   BaseOptions options;
   CancelToken cancelToken = CancelToken();
-  PersistCookieJar cookieJar = PersistCookieJar();
+  PersistCookieJar cookieJar;
   static HttpUtil getInstance(){
     if(instance == null) instance = HttpUtil();
     return instance;

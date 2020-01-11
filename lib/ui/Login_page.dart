@@ -61,8 +61,8 @@ class _LoginPageState extends State<LoginPage> {
                       _userPassController.text.length != 0) {
                     // SendLogin(_userNameController.text,_userPassController.text);
                     var data = {
-                      'username': _userNameController,
-                      'password': _userPassController
+                      'username': _userNameController.text,
+                      'password': _userPassController.text
                     };
                    HttpUtil.getInstance().request(api.HttpApiData.LOGIN, data: data).then((value) {
                       var data = json.decode(value.toString());
