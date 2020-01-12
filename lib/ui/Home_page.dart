@@ -30,7 +30,8 @@ class _Home_PageState extends State<Home_Page>
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavihationKey,
         index: _page,
-        backgroundColor: Colors.black,//colors[_page],
+        backgroundColor: Colors.white,//colors[_page],
+        color: Colors.redAccent,
         //height: 50.0,
         items: <Widget>[
           Icon(Icons.home, size: 25.0),
