@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import '../bottomNavigationBarBase/curved_navigation_bar.dart';
 import 'Home_Article_page.dart';
 class Home_Page extends StatefulWidget {
   @override
@@ -26,13 +26,18 @@ class _Home_PageState extends State<Home_Page>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    
+    return Scaffold(    
+      extendBody: true,
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavihationKey,
         index: _page,
-        backgroundColor: Colors.white,//colors[_page],
-        color: Colors.redAccent,
+        
+       // backgroundColor: Colors.white,//colors[_page],
+       // color: Colors.redAccent,
         //height: 50.0,
+        shader: 6.0,
+        backgroundColor: Colors.transparent,
         items: <Widget>[
           Icon(Icons.home, size: 25.0),
           Icon(Icons.work, size: 25.0),
