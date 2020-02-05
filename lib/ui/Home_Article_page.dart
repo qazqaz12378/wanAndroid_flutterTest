@@ -13,10 +13,12 @@ class Home_Article_page extends StatefulWidget {
   _Home_Article_pageState createState() => _Home_Article_pageState();
 }
 
-class _Home_Article_pageState extends State<Home_Article_page> {
+class _Home_Article_pageState extends State<Home_Article_page> with AutomaticKeepAliveClientMixin{
   int _page = 0;
   List<Article.Datas> articleDatas = List();
-
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
   @override
   void initState() {
     // TODO: implement initState
@@ -58,6 +60,34 @@ class _Home_Article_pageState extends State<Home_Article_page> {
       body: Container(
         color: Colors.white,
         child: EasyRefresh.custom(
+           emptyWidget: articleDatas.length == 0
+            ? Container(
+                height: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: SizedBox(),
+                      flex: 2,
+                    ),
+                    SizedBox(
+                      width: 100.0,
+                      height: 100.0,
+                      child: Image.asset('images/nodata.png'),
+                    ),
+                    Text(
+                      '没有数据',
+                      style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+                    ),
+                    Expanded(
+                      child: SizedBox(),
+                      flex: 3,
+                    ),
+                  ],
+                ),
+              )
+            : null,
           firstRefresh: true,
           header: BezierHourGlassHeader(
             color: Theme.of(context).scaffoldBackgroundColor,
