@@ -39,10 +39,10 @@ class HttpUtil{
     
     
   }
-Future post(url,{data}) async{
+Future post(url,{data,cancelToken}) async{
   try{
     Response response;
-    response = await dio.post(url,queryParameters: data);
+    response = await dio.post(url,queryParameters: data,cancelToken: cancelToken);
     print('post success---------${response.data}');
     if(response.statusCode == 200){
       return response;

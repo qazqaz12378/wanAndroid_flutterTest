@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/bezier_hour_glass_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:wanandroid_fluttertest/entity/common_entity.dart';
+import 'package:wanandroid_fluttertest/tool/ToastUtil.dart';
+import 'package:wanandroid_fluttertest/ui/Login_page.dart';
 import '../service/HttpUtil.dart';
 import '../Data/HttpData.dart';
 import '../entity/ArticleEntity.dart' as Article;
@@ -13,7 +16,8 @@ class Home_Article_page extends StatefulWidget {
   _Home_Article_pageState createState() => _Home_Article_pageState();
 }
 
-class _Home_Article_pageState extends State<Home_Article_page> with AutomaticKeepAliveClientMixin{
+class _Home_Article_pageState extends State<Home_Article_page>
+    with AutomaticKeepAliveClientMixin {
   int _page = 0;
   List<Article.Datas> articleDatas = List();
   @override
@@ -60,34 +64,35 @@ class _Home_Article_pageState extends State<Home_Article_page> with AutomaticKee
       body: Container(
         color: Colors.white,
         child: EasyRefresh.custom(
-           emptyWidget: articleDatas.length == 0
-            ? Container(
-                height: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      child: SizedBox(),
-                      flex: 2,
-                    ),
-                    SizedBox(
-                      width: 100.0,
-                      height: 100.0,
-                      child: Image.asset('images/nodata.png'),
-                    ),
-                    Text(
-                      '没有数据',
-                      style: TextStyle(fontSize: 16.0, color: Colors.grey[400]),
-                    ),
-                    Expanded(
-                      child: SizedBox(),
-                      flex: 3,
-                    ),
-                  ],
-                ),
-              )
-            : null,
+          emptyWidget: articleDatas.length == 0
+              ? Container(
+                  height: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: SizedBox(),
+                        flex: 2,
+                      ),
+                      SizedBox(
+                        width: 100.0,
+                        height: 100.0,
+                        child: Image.asset('images/nodata.png'),
+                      ),
+                      Text(
+                        '没有数据',
+                        style:
+                            TextStyle(fontSize: 16.0, color: Colors.grey[400]),
+                      ),
+                      Expanded(
+                        child: SizedBox(),
+                        flex: 3,
+                      ),
+                    ],
+                  ),
+                )
+              : null,
           firstRefresh: true,
           header: BezierHourGlassHeader(
             color: Theme.of(context).scaffoldBackgroundColor,
@@ -132,6 +137,7 @@ class _Home_Article_pageState extends State<Home_Article_page> with AutomaticKee
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
           child: ListTile(
             leading: IconButton(
+              iconSize: 20.0,
               icon: articleDatas[i].collect
                   ? Icon(
                       Icons.favorite,
@@ -141,9 +147,9 @@ class _Home_Article_pageState extends State<Home_Article_page> with AutomaticKee
               tooltip: '收藏',
               onPressed: () {
                 if (articleDatas[i].collect) {
-                  // cancelCollect(articleDatas[i].id);
+                  cancelCollect(articleDatas[i].id);
                 } else {
-                  // addCollect(articleDatas[i].id);
+                  addCollect(articleDatas[i].id);
                 }
               },
             ),
@@ -157,28 +163,38 @@ class _Home_Article_pageState extends State<Home_Article_page> with AutomaticKee
               padding: EdgeInsets.only(top: 10.0),
               child: Row(
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).primaryColor,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular((20.0)), // 圆角度
-                    ),
-                    child: Text(
-                      articleDatas[i].superChapterName,
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
+                  // Container(
+                  //   padding: EdgeInsets.symmetric(horizontal: 6),
+                  //   decoration: BoxDecoration(
+                  //     border: Border.all(
+                  //       color: Theme.of(context).primaryColor,
+                  //       width: 1.0,
+                  //     ),
+                  //     borderRadius: BorderRadius.circular((20.0)), // 圆角度
+                  //   ),
+                  //   child: Text(
+                  //     articleDatas[i].superChapterName,
+                  //     style: TextStyle(color: Theme.of(context).primaryColor),
+                  //   ),
+                  // ),
                   Container(
                     margin: EdgeInsets.only(left: 10),
-                    child: Text(articleDatas[i].author),
+                    child: articleDatas[i].author.isNotEmpty
+                        ? Text("作者: " + articleDatas[i].author)
+                        : Text("分享人: " + articleDatas[i].shareUser),
                   ),
+                  Expanded(
+                      child: Container(
+                    margin: EdgeInsets.only(left: 10),
+                    child: Text(
+                      "时间: " + articleDatas[i].niceDate,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ))
                 ],
               ),
             ),
-            trailing: Icon(Icons.chevron_right),
+            // trailing: Icon(Icons.chevron_right),
           )),
       onTap: () {
         if (0 == 1) return;
@@ -191,5 +207,35 @@ class _Home_Article_pageState extends State<Home_Article_page> with AutomaticKee
         // );
       },
     );
+  }
+
+  Future addCollect(int id) async {
+    var collectResponse =
+        await HttpUtil().post(HttpApiData.COLLECT + '$id/json');
+    Map map = json.decode(collectResponse.toString());
+    var entity = CommonEntity.fromJson(map);
+    if (entity.errorCode == -1001) {
+      YToast.show(context: context, msg: entity.errorMsg);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    } else {
+      YToast.show(context: context, msg: "收藏成功");
+      getHttpData();
+    }
+  }
+
+  Future cancelCollect(int id) async {
+    var collectResponse =
+        await HttpUtil().post(HttpApiData.UN_COLLECT_ORIGIN_ID + '$id/json');
+    Map map = json.decode(collectResponse.toString());
+    var entity = CommonEntity.fromJson(map);
+    if (entity.errorCode == -1001) {
+      YToast.show(context: context, msg: entity.errorMsg);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
+    } else {
+      YToast.show(context: context, msg: "取消成功");
+      getHttpData();
+    }
   }
 }
